@@ -1,6 +1,7 @@
 package at.IDEE.idee_app.API
 
 import at.IDEE.idee_app.API.ApiClient.API
+import at.IDEE.idee_app.AskLawDetail
 import at.IDEE.idee_app.FunFact
 import at.IDEE.idee_app.Categories
 import at.IDEE.idee_app.LawDetail
@@ -18,8 +19,8 @@ interface ApiService {
     @GET(API + "LawDetailsShort.json")
     suspend fun getShortLawDetails(@Query("category") category: String): LawDetailsShort
 
-    @GET(API + "LawDetail.json")
-    suspend fun getLawDetail(@Query("id") id: String): LawDetail
+    @POST(API + "LawDetail.json")
+    suspend fun getLawDetail(@Body id: AskLawDetail): LawDetail
 
     @GET(API + "QuizQuestions.json")
     suspend fun getQuizQuestions() : QuizQuestions

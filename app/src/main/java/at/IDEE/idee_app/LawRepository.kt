@@ -15,7 +15,7 @@ class LawRepository(
 
     suspend fun getShortLaw(category: String): LawDetailsShort =
         remote.fetchLawDetailsShort(category)
-    suspend fun getLawById(id: String): LawDetail =
+    suspend fun getLawById(id: AskLawDetail): LawDetail =
         remote.fetchLawById(id)
 
     suspend fun getRandomQuizQuestions(): List<QuizQuestion> =

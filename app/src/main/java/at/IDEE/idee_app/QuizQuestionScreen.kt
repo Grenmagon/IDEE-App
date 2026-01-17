@@ -114,7 +114,7 @@ fun QuizQuestionScreen(
 }
 
 
-
+/*
 @Composable
 fun AnswerOptionCard(
     text: String,
@@ -174,6 +174,7 @@ fun AnswerOptionCard(
         }
     }
 }
+*/
 
 @Preview(showBackground = true)
 @Composable

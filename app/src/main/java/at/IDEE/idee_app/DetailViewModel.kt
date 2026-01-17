@@ -1,6 +1,7 @@
 package at.IDEE.idee_app
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -11,6 +12,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 
 class DetailViewModelFactory(
@@ -42,8 +48,21 @@ class DetailViewModel(
     var ausgewaehlterTab =  mutableStateOf("einfach")
 
     fun loadLaw(id: String) {
+        Log.d("LawDetail", id)
         viewModelScope.launch {
-            lawDetail.value = repository.getLawById(id)
+
+            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.GERMANY)
+            val formattedTime = sdf.format(Date())
+
+
+            var askLawDetail = AskLawDetail(
+                id = id,
+                datetime = formattedTime,
+                address = "TODO()"
+            )
+
+
+            lawDetail.value = repository.getLawById(askLawDetail)
         }
     }
 

@@ -1,6 +1,10 @@
 package at.IDEE.idee_app
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
+import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -157,6 +162,7 @@ fun DetailHeader(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
+        /*
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -173,7 +179,7 @@ fun DetailHeader(
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             )
         }
-
+        */
         Text(
             text = gesetz.title,
             style = MaterialTheme.typography.headlineSmall,
@@ -233,6 +239,33 @@ fun TabSelector(
     }
 }
 
+fun isUrl(text: String): Boolean =
+    text.startsWith("http://") || text.startsWith("https://")
+
+fun openPdf(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        setDataAndType(Uri.parse(url), "application/pdf")
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+    context.startActivity(intent)
+}
+
+@Composable
+fun HtmlContent(url: String, modifier: Modifier = Modifier) {
+    AndroidView(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(300.dp),
+        factory = { context ->
+            WebView(context).apply {
+                settings.javaScriptEnabled = true
+                loadUrl(url)
+            }
+        }
+    )
+}
+
+
 @Composable
 fun InfoCard(
     title: String,
@@ -272,9 +305,19 @@ fun InfoCard(
                 }
             }
             Spacer (Modifier.height(8.dp))
-            Text (
-                text = displayText,
-                style = MaterialTheme.typography.bodyLarge)
+            if (isUrl(content)) {
+                val context = LocalContext.current
+
+                Button(onClick = { openPdf(context, content) }) {
+                    Text("PDF öffnen")
+                }
+
+            } else {
+                Text(
+                    text = displayText,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
     }
 }

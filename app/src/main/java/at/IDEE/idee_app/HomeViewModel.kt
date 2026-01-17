@@ -1,5 +1,6 @@
 package at.IDEE.idee_app
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -27,17 +28,27 @@ class HomeViewModel(
     val shortLaws = mutableStateOf<List<LawDetailShort>>(emptyList())
     val funFact = mutableStateOf<String?>(null)
 
+    val foundtxt = mutableStateOf<String?>(null)
+
     fun loadHomeData() {
         viewModelScope.launch {
-            categories.value = repository.getAllCategories()
+            //categories.value = repository.getAllCategories()
             funFact.value = repository.getRandomFunFact()
         }
     }
 
     fun getShortLaw(category: String)
     {
+        foundtxt.value = "";
         viewModelScope.launch {
             shortLaws.value = repository.getShortLaw(category).lawDetailShort
+            if (shortLaws.value.isEmpty()) {
+                Log.d("fetchLawDetailsShort", "Kein Ergebnis gefunden")
+                foundtxt.value = "Kein Ergebnis gefunden!"
+            }
+            else
+                foundtxt.value = shortLaws.value.count().toString() + " Ergebnise gefunden!"
+
         }
     }
 }

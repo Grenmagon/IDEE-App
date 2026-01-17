@@ -2,6 +2,7 @@ package at.IDEE.idee_app.API
 
 import android.util.Log
 import at.IDEE.idee_app.AppViewModel
+import at.IDEE.idee_app.AskLawDetail
 import at.IDEE.idee_app.FunFact
 import at.IDEE.idee_app.LawDetail
 import at.IDEE.idee_app.QuizQuestion
@@ -69,7 +70,7 @@ class FetchData(
         }
     }
 
-    suspend fun fetchLawById(id: String): LawDetail {
+    suspend fun fetchLawById(id: AskLawDetail): LawDetail {
         return try {
             Log.d("fetchLawById", "fetchLawById")
 

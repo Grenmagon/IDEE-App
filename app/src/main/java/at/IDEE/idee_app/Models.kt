@@ -1,17 +1,28 @@
 package at.IDEE.idee_app
 
+import okhttp3.Address
+
 data class Categories(
     val categories : List<String>
 )
 
 data class LawDetailShort(
     val id: String,
-    val title: String
+    val title: String,
+    val url: String,
+    val dokid: String
 )
 
 data class LawDetailsShort(
     val lawDetailShort: List<LawDetailShort>
 )
+
+data class AskLawDetail(
+    var id: String,
+    val datetime: String,
+    val address: String
+)
+
 data class LawDetail(
     val id: String,
     val title: String,

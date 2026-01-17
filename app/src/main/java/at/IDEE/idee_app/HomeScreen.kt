@@ -1,19 +1,26 @@
 package at.IDEE.idee_app
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,16 +61,19 @@ fun HomeScreen(
 
     val kategorien by viewModel.categories
     val funFact by viewModel.funFact
+    val foundtxt by viewModel.foundtxt
 
     var suchtext by remember { mutableStateOf("") }
     var isDropdownExpanded by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
             GesetzesTopBar(
                 navController = navController,
                 showBackButton = false,
-                appViewModel = appViewModel)
+                appViewModel = appViewModel
+            )
         },
         bottomBar = {
             Column(
@@ -100,6 +111,55 @@ fun HomeScreen(
                 fontWeight = FontWeight.Bold
             )
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+
+                TextField(
+                    value = suchtext,
+                    onValueChange = { suchtext = it },
+                    modifier = Modifier.weight(1f),
+                    placeholder = { Text("Suchstring") },
+                    //leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(onSearch = {
+                        if (suchtext.isNotBlank()) {
+                            viewModel.getShortLaw(suchtext)
+                        }
+                    })
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+
+                IconButton(
+                    onClick = {
+                        if (suchtext.isNotBlank()) {
+                            viewModel.getShortLaw(suchtext)
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Suchen"
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+                foundtxt?.let {
+                    Text(
+                        it,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 10.sp
+                    )
+                }
+            }
+            /*
             ExposedDropdownMenuBox(
                 expanded = isDropdownExpanded,
                 onExpandedChange = { isDropdownExpanded = it }
@@ -140,6 +200,7 @@ fun HomeScreen(
                     }
                 }
             }
+             */
 
             val shortLaw by viewModel.shortLaws
 
@@ -149,7 +210,8 @@ fun HomeScreen(
                         title = link.title,
                         onClick = {
                             // z. B. Navigation mit ID
-                            navController.navigate("details/${link.id}")
+                            Log.d("","")
+                            navController.navigate("details/${link.dokid}")
                         }
                     )
                 }
