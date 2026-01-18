@@ -124,6 +124,7 @@ fun DetailScreen(
                             title = "Verständlich erklärt",
                             content = gesetz.summary ,
                             icon = Icons.Default.ContentCopy,
+                            "",
                             appViewModel
                         )
                     }
@@ -132,6 +133,7 @@ fun DetailScreen(
                         title = "Offizieller Gesetzestext",
                         content = gesetz.officialText,
                         icon = Icons.Default.Gavel,
+                        lawyer = gesetz.lawyer,
                         appViewModel
                     )
                 }
@@ -271,6 +273,7 @@ fun InfoCard(
     title: String,
     content: String,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
+    lawyer: String,
     appViewModel: AppViewModel
 ) {
     val catModeEnabled = appViewModel.catModeEnabled
@@ -311,6 +314,15 @@ fun InfoCard(
                 Button(onClick = { openPdf(context, content) }) {
                     Text("PDF öffnen")
                 }
+
+                Text(
+                    text = "Weitere Informationen empfehelen wir ihnen:",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = lawyer,
+                    style = MaterialTheme.typography.bodyLarge
+                )
 
             } else {
                 Text(

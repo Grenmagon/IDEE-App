@@ -30,7 +30,8 @@ data class LawDetail(
     val paragraph: String,
     val summary: String,
     val officialText: String,
-    val source: String
+    val source: String,
+    val lawyer: String
 )
 
 data class FavoriteLaw(

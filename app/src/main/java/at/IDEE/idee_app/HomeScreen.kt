@@ -3,13 +3,17 @@ package at.IDEE.idee_app
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -59,13 +63,10 @@ fun HomeScreen(
         viewModel.loadHomeData()
     }
 
-    val kategorien by viewModel.categories
     val funFact by viewModel.funFact
     val foundtxt by viewModel.foundtxt
 
     var suchtext by remember { mutableStateOf("") }
-    var isDropdownExpanded by remember { mutableStateOf(false) }
-
 
     Scaffold(
         topBar = {
@@ -79,6 +80,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .navigationBarsPadding()
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -146,6 +148,7 @@ fun HomeScreen(
                     )
                 }
             }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -159,53 +162,18 @@ fun HomeScreen(
                     )
                 }
             }
-            /*
-            ExposedDropdownMenuBox(
-                expanded = isDropdownExpanded,
-                onExpandedChange = { isDropdownExpanded = it }
-            ) {
-                TextField(
-                    value = suchtext,
-                    onValueChange = {
-                        suchtext = it
-                        isDropdownExpanded = true
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(),
-                    leadingIcon = {
-                        Icon(Icons.Default.Search, contentDescription = null)
-                    }
-                )
-
-                val gefiltert = kategorien.filter {
-                    it.contains(suchtext, ignoreCase = true)
-                }
-
-                ExposedDropdownMenu(
-                    expanded = isDropdownExpanded && gefiltert.isNotEmpty(),
-                    onDismissRequest = { isDropdownExpanded = false }
-                ) {
-                    gefiltert.forEach { kategorie ->
-                        DropdownMenuItem(
-                            text = { Text(kategorie) },
-                            onClick = {
-                                suchtext = kategorie
-                                isDropdownExpanded = false
-
-                                viewModel.getShortLaw(kategorie)
-
-                            }
-                        )
-                    }
-                }
-            }
-             */
 
             val shortLaw by viewModel.shortLaws
 
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                shortLaw.forEach { link ->
+            LazyColumn(
+                //modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(bottom = 16.dp)
+
+            )
+            {
+                items(shortLaw){ link ->
                     QuickLinkCard(
                         title = link.title,
                         onClick = {
@@ -215,9 +183,10 @@ fun HomeScreen(
                         }
                     )
                 }
+
             }
 
-            Spacer(Modifier.weight(1f))
+            //Spacer(Modifier.weight(1f))
 
             funFact?.let {
                 FunFactCard(

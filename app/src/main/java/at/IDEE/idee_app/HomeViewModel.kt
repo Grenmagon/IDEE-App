@@ -34,6 +34,7 @@ class HomeViewModel(
         viewModelScope.launch {
             //categories.value = repository.getAllCategories()
             funFact.value = repository.getRandomFunFact()
+            Log.d("fetchRandomFunFact-hvm", funFact.value.toString())
         }
     }
 

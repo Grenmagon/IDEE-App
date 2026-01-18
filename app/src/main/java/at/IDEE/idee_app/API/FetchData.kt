@@ -91,7 +91,8 @@ class FetchData(
                 paragraph = "",
                 summary = "",
                 officialText = "",
-                source = ""
+                source = "",
+                lawyer = ""
             )
         }
     }

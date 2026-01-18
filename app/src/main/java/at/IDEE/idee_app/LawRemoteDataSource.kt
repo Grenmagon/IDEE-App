@@ -24,7 +24,8 @@ class LawRemoteDataSource {
             paragraph = "",
             summary = "",
             officialText = "",
-            source = ""
+            source = "",
+            lawyer = ""
         )
     }
 
