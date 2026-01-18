@@ -19,7 +19,7 @@ object ApiClient
     private val httpClient = OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .writeTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(60, TimeUnit.SECONDS) // Server kann länger brauchen
+        .readTimeout(300, TimeUnit.SECONDS) // Server kann länger brauchen
         .addInterceptor(logging)
         .build()
 
@@ -40,7 +40,7 @@ object ApiClient
         val httpClient = OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(300, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .build()
 
