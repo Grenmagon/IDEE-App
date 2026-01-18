@@ -87,10 +87,23 @@ fun QuizQuestionScreen(
             style = MaterialTheme.typography.labelLarge
         )
 
-        Text(
-            text = question.questionText,
-            style = MaterialTheme.typography.headlineSmall
-        )
+        //Anpassung FRAGE – gut lesbar in einer Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            Text(
+                text = question.questionText,
+                modifier = Modifier.padding(20.dp),
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+
 
         question.options.forEach { option ->
             Button(
@@ -112,69 +125,6 @@ fun QuizQuestionScreen(
         navigateHome = true // optional
     )
 }
-
-
-/*
-@Composable
-fun AnswerOptionCard(
-    text: String,
-    indexLabel: String,
-    isSelected: Boolean,
-    isCorrect: Boolean,
-    isEvaluated: Boolean,
-    onClick: () -> Unit
-) {
-    val borderColor = when {
-        isEvaluated && isCorrect -> Color(0xFF00796B) // Richtig
-        isEvaluated && isSelected && !isCorrect -> Color(0xFFD32F2F) // Falsch ausgewählt
-        else -> MaterialTheme.colorScheme.outline
-    }
-    val backgroundColor = when {
-        isEvaluated && isCorrect -> Color(0xFFE0F2F1) // Helles Grün
-        isEvaluated && isSelected && !isCorrect -> Color(0xFFFFEBEE) // Helles Rot
-        else -> MaterialTheme.colorScheme.surface
-    }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        border = BorderStroke(1.dp, borderColor),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = indexLabel, fontWeight = FontWeight.Bold)
-                }
-                Text(text = text, style = MaterialTheme.typography.bodyLarge)
-            }
-            if (isEvaluated && isCorrect) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = "Richtige Antwort",
-                    tint = borderColor
-                )
-            }
-        }
-    }
-}
-*/
 
 @Preview(showBackground = true)
 @Composable
